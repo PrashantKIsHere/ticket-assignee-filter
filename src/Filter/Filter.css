@@ -1,0 +1,22 @@
+.filter {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.filter label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.filter__status {
+  width: 30%
+}
+
+.filter__type {
+  width: 30%
+}
+
+.filter__priority {
+  width: 30%
+}
