@@ -45,6 +45,18 @@ class Filter extends Component {
             onChange={this.props.onPriorityChange}
           />
         </div>
+        <div className="filter__days">
+          <label> Days </label>
+          <Select
+            className="filter__select"
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            isMulti
+            options={this.props.daysOptions}
+            value={this.props.selectedDays}
+            onChange={this.props.onDaysChange}
+          />
+        </div>
       </div>
     )
   }

@@ -1,6 +1,7 @@
 .filter {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   margin: 20px;
 }
 
@@ -9,14 +10,22 @@
   margin-bottom: 10px;
 }
 
+.filter__select {
+  margin-bottom: 20px;
+}
+
 .filter__status {
-  width: 30%
+  width: 45%
 }
 
 .filter__type {
-  width: 30%
+  width: 45%
 }
 
 .filter__priority {
-  width: 30%
+  width: 45%
+}
+
+.filter__days {
+  width: 45%;
 }

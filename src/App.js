@@ -13,7 +13,8 @@ class App extends Component {
       assigneeList: this.getAssigneeList(data),
       selectedStatus: [],
       selectedType: [],
-      selectedPriority: []
+      selectedPriority: [],
+      selectedDays: []
     }
   }
 
@@ -25,6 +26,14 @@ class App extends Component {
       }
     })
     return options.map(item => ({ label: item, value: item }))
+  }
+
+  getDaysOption = () => {
+    return [
+      { label: "Last 7 Days", value: new Date().setDate(new Date().getDate() - 7) },
+      { label: "Last 30 Days", value: new Date().setDate(new Date().getDate() - 30) },
+      { label: "Last 60 Days", value: new Date().setDate(new Date().getDate() - 60) }
+    ]
   }
 
   getAssigneeList = (data) => {
@@ -55,9 +64,13 @@ class App extends Component {
     this.setState({ selectedPriority: [...option] }, this.updateAssigneeList)
   }
 
+  onDaysChange = (option) => {
+    this.setState({ selectedDays : [...option] }, this.updateAssigneeList)
+  }
+
   filterData = () => {
     let filteredList = [...this.state.data.records];
-    const { selectedStatus, selectedType, selectedPriority } = this.state
+    const { selectedStatus, selectedType, selectedPriority, selectedDays } = this.state
     if (selectedStatus.length) {
       const selectedStatusList = selectedStatus.map(item => item.value)
       filteredList = filteredList.filter(item => selectedStatusList.indexOf(item.status) !== -1);
@@ -70,11 +83,18 @@ class App extends Component {
       const selectedPriorityList = selectedPriority.map(item => item.value)
       filteredList = filteredList.filter(item => selectedPriorityList.indexOf(item.priority) !== -1);
     }
+    if(selectedDays.length){
+      const selectedDaysList =  selectedDays.map(item => item.value)
+      filteredList = filteredList.filter(item => { 
+        const issueCreatedAt = new Date(0).setUTCSeconds(item.issue_created_at);
+        return selectedDaysList.some(days => issueCreatedAt >= days);
+      })
+    }
     return { records: filteredList };
   }
 
   render() {
-    const { assigneeList, selectedStatus, selectedType, selectedPriority } = this.state;
+    const { assigneeList, selectedStatus, selectedType, selectedPriority, selectedDays } = this.state;
     return (
       <div className="App" >
         <Chart assigneeList={assigneeList} />
@@ -85,9 +105,12 @@ class App extends Component {
           selectedType={selectedType}
           priorityOptions={this.getFilterOption("priority")}
           selectedPriority={selectedPriority}
+          daysOptions={this.getDaysOption()}
+          selectedDays={selectedDays}
           onStatusChange={this.onStatusChange}
           onTypeChange={this.onTypeChange}
           onPriorityChange={this.onPriorityChange}
+          onDaysChange={this.onDaysChange}
         />
       </div>
     );
